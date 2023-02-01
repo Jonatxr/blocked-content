@@ -15,8 +15,10 @@ ff02::3 ip6-allhosts
 
 # Custom host records are listed here.
 
-facebook.com
-www.facebook.com
+0.0.0.0 facebook.com
+0.0.0.0 www.facebook.com
+0.0.0.0 twitter.com
+0.0.0.0 www.twitter.Com
 
 # End of custom host records.
 
