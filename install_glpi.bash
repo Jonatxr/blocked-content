@@ -1,12 +1,19 @@
 #!/bin/bash
 
 # Variables
-GLPI_VERSION="10.0.6"
+GLPI_VERSION="9.5.2"
 GLPI_DIRECTORY="/var/www/html/glpi"
 GLPI_DB_NAME="glpi"
 GLPI_DB_USER="glpi"
 GLPI_DB_PASSWORD="glpi"
-APACHE_VHOST_NAME="glpi.sio.local"
+APACHE_VHOST_NAME="glpi.example.com"
+
+# Mise à jour du système
+sudo apt-get update
+sudo apt-get upgrade -y
+
+# Installation des paquets nécessaires
+sudo apt-get install -y apache2 php php-mysql php-intl php-curl libapache2-mod-php mysql-server
 
 # Téléchargement de la dernière version de GLPI
 wget https://github.com/glpi-project/glpi/releases/download/$GLPI_VERSION/glpi-$GLPI_VERSION.tgz
@@ -21,14 +28,15 @@ sudo mv glpi $GLPI_DIRECTORY
 sudo chown -R www-data:www-data $GLPI_DIRECTORY
 sudo chmod -R 775 $GLPI_DIRECTORY/files
 
-# Connexion à MySQL en tant que root
-mysql -u root -p <<EOF
+# Configuration de MySQL pour permettre les connexions à distance
+sudo sed -i "s/.*bind-address.*/bind-address = 0.0.0.0/" /etc/mysql/mysql.conf.d/mysqld.cnf
+sudo service mysql restart
 
 # Création de l'utilisateur et de la base de données GLPI
-CREATE USER '$GLPI_DB_USER'@'localhost' IDENTIFIED BY '$GLPI_DB_PASSWORD';
+mysql -u root -p <<EOF
+CREATE USER '$GLPI_DB_USER'@'%' IDENTIFIED BY '$GLPI_DB_PASSWORD';
 CREATE DATABASE $GLPI_DB_NAME;
-GRANT ALL PRIVILEGES ON $GLPI_DB_NAME.* TO '$GLPI_DB_USER'@'localhost';
-
+GRANT ALL PRIVILEGES ON $GLPI_DB_NAME.* TO '$GLPI_DB_USER'@'%';
 EOF
 
 # Création de l'hôte virtuel Apache pour GLPI
@@ -51,5 +59,12 @@ sudo echo "<VirtualHost *:80>
 # Activation de l'hôte virtuel Apache pour GLPI
 sudo a2ensite glpi
 
-# Redémarrage d'Apache pour prendre en compte les modifications
+#Redémarrage d'Apache pour prendre en compte les modifications
+
 sudo service apache2 restart
+
+#Nettoyage des fichiers temporaires
+
+rm glpi-$GLPI_VERSION.tgz
+
+echo "L'installation de GLPI a été terminée avec succès."
