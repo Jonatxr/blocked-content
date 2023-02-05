@@ -6,6 +6,7 @@ APACHE_SITE_ENABLED_DIR="/etc/apache2/sites-enabled/"
 ZABBIX_DB_NAME="zabbix_db"
 ZABBIX_DB_USER="zabbix_jonathan"
 ZABBIX_DB_PASSWORD="zabbix_Christine1+"
+ZABBIX_VHOST="zabbix.sio.local"
 
 # Vérifier si LAMP est installé
 echo "Vérification de l'installation du serveur LAMP..."
@@ -42,7 +43,7 @@ sudo echo "
 <VirtualHost *:80>
     ServerAdmin webmaster@localhost
     DocumentRoot /usr/share/zabbix
-    ServerName zabbix.example.com
+    ServerName $ZABBIX_VHOST
     ErrorLog ${APACHE_LOG_DIR}/error.log
     CustomLog ${APACHE_LOG_DIR}/access.log combined
 
