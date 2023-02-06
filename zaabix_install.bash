@@ -42,7 +42,7 @@ echo "Hôte virtuel Apache pour Zabbix créé avec succès."
 
 # Configurer la base de données pour Zabbix
 echo "Configuration de la base de données pour Zabbix..."
-sudo zcat /usr/share/doc/zabbix-server-mysql/create.sql.gz | mysql -u $ZABBIX_DB_USER -p$ZABBIX_DB_PASSWORD $ZABBIX_DB_NAME
+sudo zcat /usr/share/doc/zabbix-server-mysql/create.sql.gz | mysql -u $ZABBIX_DB_USER -p $ZABBIX_DB_PASSWORD $ZABBIX_DB_NAME
 sudo sed -i "s/# DBPassword=/DBPassword=$ZABBIX_DB_PASSWORD/g" /etc/zabbix/zabbix_server.conf
 sudo systemctl restart zabbix-server
 echo "Base de données pour Zabbix configurée avec succès"
