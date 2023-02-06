@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Variables
-DB_NAME=zabbix_database
-DB_USER=zabbix_admin
+DB_NAME=zabbix
+DB_USER=jonathan_zabbix
 DB_PASS=Christine1+
 DB_HOST=localhost
 
@@ -34,7 +34,7 @@ set global log_bin_trust_function_creators = 1;
 EOF
 
 # Import Zabbix database schema
-zcat /usr/share/doc/zabbix-server-mysql*/create.sql.gz | mysql -u $DB_USER -p$DB_PASS $DB_NAME
+zcat /usr/share/zabbix-sql-scripts/mysql/server.sql.gz | mysql --default-character-set=utf8mb4 -u$DB_USER -p$DB_PASS $DB_NAME
 
 # Configure Zabbix server
 sudo sed -i "s/# DBPassword=.*/DBPassword=$DB_PASS/g" /etc/zabbix/zabbix_server.conf
@@ -55,5 +55,5 @@ EOF"
 sudo a2ensite zabbix
 sudo a2enmod ssl
 sudo a2enmod rewrite
-sudo systemctl restart apache2
+sudo systemctl restart apache2 zabbix*
 systemctl enable zabbix-server zabbix-agent apache2
