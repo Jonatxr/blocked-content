@@ -45,7 +45,7 @@ sudo systemctl restart zabbix-server
 # Configure Apache virtual host
 sudo bash -c "cat << EOF > /etc/apache2/sites-available/zabbix.conf
 <VirtualHost *:80>
-  ServerName zabbix.local
+  ServerName zabbix.sio.local
   DocumentRoot /usr/share/zabbix
   <Directory /usr/share/zabbix>
     Require all granted
