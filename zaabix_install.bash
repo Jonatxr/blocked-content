@@ -1,61 +1,39 @@
-#!/bin/bash
-
 # Variables
 APACHE_CONF_FILE="/etc/apache2/sites-available/zabbix.conf"
-APACHE_SITE_ENABLED_DIR="/etc/apache2/sites-enabled/"
+APACHE_SITE_ENABLED_DIR="/etc/apache2/sites-enabled"
 ZABBIX_DB_NAME="zabbix_db"
 ZABBIX_DB_USER="zabbix_jonathan"
 ZABBIX_DB_PASSWORD="zabbix_Christine1+"
-ZABBIX_VHOST="zabbix.sio.local"
+SERVER_NAME="zabbix.sio.local"
 
 # Vérifier si LAMP est installé
-echo "Vérification de l'installation du serveur LAMP..."
-if [ $(dpkg-query -W -f='${Status}' apache2 2>/dev/null | grep -c "ok installed") -eq 0 ];
-then
-    echo "Installation du serveur LAMP en cours..."
-    sudo apt-get update
-    sudo apt-get install apache2 -y
-    sudo apt-get install mysql-server -y
-    sudo apt-get install php -y
-    sudo apt-get install libapache2-mod-php -y
-    echo "Serveur LAMP installé avec succès."
+echo "Vérification de l'installation de LAMP..."
+if ! dpkg -s apache2 mysql-server php | grep -q 'Status: install ok installed'; then
+  echo "LAMP n'est pas installé, installation en cours..."
+  sudo apt update
+  sudo apt install apache2 mysql-server php -y
+  sudo mysql_secure_installation
 else
-    echo "Serveur LAMP déjà installé."
+  echo "LAMP est déjà installé."
 fi
 
-# Créer la base de données pour Zabbix
-echo "Création de la base de données pour Zabbix..."
-sudo mysql -u root << EOF
-CREATE DATABASE $ZABBIX_DB_NAME;
-CREATE USER '$ZABBIX_DB_USER'@'localhost' IDENTIFIED BY '$ZABBIX_DB_PASSWORD';
-GRANT ALL PRIVILEGES ON $ZABBIX_DB_NAME.* TO '$ZABBIX_DB_USER'@'localhost';
-EOF
-echo "Base de données pour Zabbix créée avec succès."
-
-# Installer Zabbix
-echo "Installation de Zabbix..."
-sudo apt-get install zabbix-server-mysql zabbix-frontend-php -y
-echo "Zabbix installé avec succès."
-
-# Configurer l'hôte virtuel Apache pour Zabbix
+# Créer l'hôte virtuel Apache pour Zabbix
 echo "Création de l'hôte virtuel Apache pour Zabbix..."
-sudo echo "
+sudo bash -c "cat > $APACHE_CONF_FILE <<EOF
 <VirtualHost *:80>
-    ServerAdmin webmaster@localhost
-    DocumentRoot /usr/share/zabbix
-    ServerName $ZABBIX_VHOST
-    ErrorLog ${APACHE_LOG_DIR}/error.log
-    CustomLog ${APACHE_LOG_DIR}/access.log combined
-
-    <Directory /usr/share/zabbix>
-        Require all granted
-        AllowOverride None
-    </Directory>
-</VirtualHost>" > $APACHE_CONF_FILE
-sudo ln -s $APACHE_CONF_FILE $APACHE_SITE_ENABLED_DIR
-sudo a2enmod alias
-sudo a2enmod dir
-sudo a2enmod env
+  ServerName $SERVER_NAME
+  DocumentRoot /usr/share/zabbix
+  <Directory /usr/share/zabbix>
+    Require all granted
+    AllowOverride all
+  </Directory>
+</VirtualHost>
+EOF"
+sudo ln -s $APACHE_CONF_FILE $APACHE_SITE_ENABLED_DIR/
+sudo sed -i 's/max_execution_time = 30/max_execution_time = 300/' /etc/php/7.4/apache2/php.ini
+sudo sed -i 's/max_input_time = 60/max_input_time = 300/' /etc/php/7.4/apache2/php.ini
+sudo sed -i 's/;date.timezone =/date.timezone = Europe\/Paris/' /etc/php/7.4/apache2/php.ini
+sudo sed -i 's/post_max_size = 8M/post_max_size = 16M/' /etc/php/7.4/apache2/php.ini
 sudo a2enmod mime
 sudo a2enmod rewrite
 sudo a2ensite zabbix
@@ -67,8 +45,22 @@ echo "Configuration de la base de données pour Zabbix..."
 sudo zcat /usr/share/doc/zabbix-server-mysql/create.sql.gz | mysql -u $ZABBIX_DB_USER -p$ZABBIX_DB_PASSWORD $ZABBIX_DB_NAME
 sudo sed -i "s/# DBPassword=/DBPassword=$ZABBIX_DB_PASSWORD/g" /etc/zabbix/zabbix_server.conf
 sudo systemctl restart zabbix-server
-echo "Base de données pour Zabbix configurée avec succès."
+echo "Base de données pour Zabbix configurée avec succès"
 
-# Configuration terminée avec succès
-echo "Installation et configuration de Zabbix terminées avec succès."
+# Mettre à jour les packages et installer Zabbix
+echo "Mise à jour des packages et installation de Zabbix..."
+sudo apt update
+sudo apt install zabbix-server-mysql zabbix-frontend-php -y
 
+# Configurer Zabbix pour utiliser PHP
+echo "Configuration de Zabbix pour utiliser PHP..."
+sudo sed -i 's/# php_value date.timezone Europe\/Riga/php_value date.timezone Europe\/Paris/' /etc/zabbix/apache.conf
+sudo sed -i 's/max_execution_time = 30/max_execution_time = 300/' /etc/php/7.4/apache2/conf.d/zabbix.ini
+sudo sed -i 's/max_input_time = 60/max_input.time = 300/' /etc/php/7.4/apache2/conf.d/zabbix.ini
+sudo sed -i 's/post_max_size = 8M/post_max_size = 16M/' /etc/php/7.4/apache2/conf.d/zabbix.ini
+
+# Redémarrer Apache
+echo "Redémarrage d'Apache pour prendre en compte les modifications..."
+sudo systemctl restart apache2
+
+echo "Installation de Zabbix terminée avec succès."
