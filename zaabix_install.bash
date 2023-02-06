@@ -5,6 +5,9 @@ ZABBIX_DB_NAME="zabbix"
 ZABBIX_DB_USER="zabbix_jonathan"
 ZABBIX_DB_PASSWORD="zabbix_Christine1+"
 SERVER_NAME="zabbix.sio.local"
+DB_NAME="zabbix_db"
+DB_USER="zabbix_jonathan"
+DB_PASS="Christine1+"
 
 # Vérifier si LAMP est installé
 echo "Vérification de l'installation de LAMP..."
@@ -41,11 +44,15 @@ sudo systemctl restart apache2
 echo "Hôte virtuel Apache pour Zabbix créé avec succès."
 
 # Configurer la base de données pour Zabbix
-echo "Configuration de la base de données pour Zabbix..."
-sudo zcat /usr/share/doc/zabbix-server-mysql/create.sql.gz | mysql -u $ZABBIX_DB_USER -p $ZABBIX_DB_PASSWORD $ZABBIX_DB_NAME
-sudo sed -i "s/# DBPassword=/DBPassword=$ZABBIX_DB_PASSWORD/g" /etc/zabbix/zabbix_server.conf
-sudo systemctl restart zabbix-server
-echo "Base de données pour Zabbix configurée avec succès"
+echo "Configuration de MySQL..."
+sudo mysql -uroot << EOF
+CREATE DATABASE $DB_NAME;
+CREATE USER '$DB_USER'@'localhost' IDENTIFIED BY '$DB_PASS';
+GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'localhost';
+FLUSH PRIVILEGES;
+EOF
+
+echo "Base de données pour Zabbix Server créée avec succès."
 
 # Mettre à jour les packages et installer Zabbix
 echo "Mise à jour des packages et installation de Zabbix..."
