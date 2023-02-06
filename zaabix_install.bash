@@ -1,7 +1,7 @@
 # Variables
 APACHE_CONF_FILE="/etc/apache2/sites-available/zabbix.conf"
 APACHE_SITE_ENABLED_DIR="/etc/apache2/sites-enabled"
-ZABBIX_DB_NAME="zabbix_db"
+ZABBIX_DB_NAME="zabbix"
 ZABBIX_DB_USER="zabbix_jonathan"
 ZABBIX_DB_PASSWORD="zabbix_Christine1+"
 SERVER_NAME="zabbix.sio.local"
