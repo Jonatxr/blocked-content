@@ -45,7 +45,7 @@ echo "Hôte virtuel Apache pour Zabbix créé avec succès."
 
 # Configurer la base de données pour Zabbix
 echo "Configuration de MySQL..."
-sudo mysql -uroot << EOF
+sudo mysql -u root << EOF
 CREATE DATABASE $DB_NAME;
 CREATE USER '$DB_USER'@'localhost' IDENTIFIED BY '$DB_PASS';
 GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'localhost';
