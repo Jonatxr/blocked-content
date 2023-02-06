@@ -25,7 +25,7 @@ sudo sed -i 's/post_max_size = 8M/post_max_size = 16M/g' /etc/php/7.4/apache2/ph
 sudo systemctl restart apache2
 
 # Create database and user
-mysql -u root << EOF
+mysql -u root -p << EOF
 CREATE DATABASE $DB_NAME CHARACTER SET utf8 COLLATE utf8_bin;
 CREATE USER '$DB_USER'@'$DB_HOST' IDENTIFIED BY '$DB_PASS';
 GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'$DB_HOST';
