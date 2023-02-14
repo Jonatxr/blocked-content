@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Variables
-GLPI_VERSION=10.6.3
+GLPI_VERSION=10.0.6
 GLPI_DB_NAME=glpidb
 GLPI_DB_USER=glpiuser
 GLPI_DB_PASSWORD=password
