@@ -19,6 +19,7 @@ fi
 if [ -d "/var/www/glpi" ]; then
     rm -rf /var/www/glpi
 fi
+
 # Download GLPI
 wget https://github.com/glpi-project/glpi/releases/download/$GLPI_VERSION/glpi-$GLPI_VERSION.tgz
 tar xvfz glpi-$GLPI_VERSION.tgz
@@ -38,11 +39,16 @@ mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "CREATE DATABASE $GLPI_DB_NAME;"
 mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "CREATE USER '$GLPI_DB_USER'@'localhost' IDENTIFIED BY '$GLPI_DB_PASSWORD';"
 mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "GRANT ALL PRIVILEGES ON $GLPI_DB_NAME.* TO '$GLPI_DB_USER'@'localhost';"
 
+if [ -d "/var/www/glpi" ]; then
+	a2dissite $GLPI_VHOST_NAME
+    rm -rf /etc/apache2/sites-available/$GLPI_VHOST_NAME.conf
+fi
+
 # Create Apache virtual host
 echo "<VirtualHost *:80>
         ServerName $GLPI_VHOST_NAME
-        DocumentRoot /var/www/html/glpi
-        <Directory /var/www/html/glpi>
+        DocumentRoot /var/www/glpi
+        <Directory /var/www/glpi>
                 Options Indexes FollowSymLinks
                 AllowOverride All
                 Require all granted
