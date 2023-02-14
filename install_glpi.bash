@@ -4,6 +4,7 @@
 GLPI_VERSION=10.0.6
 GLPI_DB_NAME=glpidb
 GLPI_DB_USER=glpiuser
+MYSQL_ROOT_PASSWORD=Christine1+
 GLPI_DB_PASSWORD=password
 GLPI_VHOST_NAME=glpi.sio.local
 
@@ -18,9 +19,9 @@ mv glpi /var/www/
 chown -R www-data:www-data /var/www/glpi
 
 # Create GLPI database and user
-mysql -e "CREATE DATABASE $GLPI_DB_NAME;"
-mysql -e "CREATE USER '$GLPI_DB_USER'@'localhost' IDENTIFIED BY '$GLPI_DB_PASSWORD';"
-mysql -e "GRANT ALL PRIVILEGES ON $GLPI_DB_NAME.* TO '$GLPI_DB_USER'@'localhost';"
+mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "CREATE DATABASE $GLPI_DB_NAME;"
+mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "CREATE USER '$GLPI_DB_USER'@'localhost' IDENTIFIED BY '$GLPI_DB_PASSWORD';"
+mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "GRANT ALL PRIVILEGES ON $GLPI_DB_NAME.* TO '$GLPI_DB_USER'@'localhost';"
 
 # Create Apache virtual host
 echo "<VirtualHost *:80>
