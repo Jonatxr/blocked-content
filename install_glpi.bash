@@ -5,7 +5,7 @@ GLPI_VERSION=10.6.3
 GLPI_DB_NAME=glpidb
 GLPI_DB_USER=glpiuser
 GLPI_DB_PASSWORD=password
-GLPI_VHOST_NAME=glpi.example.com
+GLPI_VHOST_NAME=glpi.sio.local
 
 # Install required packages and PHP extensions
 apt-get update
@@ -14,8 +14,8 @@ apt-get install -y apache2 mariadb-server php libapache2-mod-php php-mysql php-c
 # Download GLPI
 wget https://github.com/glpi-project/glpi/releases/download/$GLPI_VERSION/glpi-$GLPI_VERSION.tgz
 tar xvfz glpi-$GLPI_VERSION.tgz
-mv glpi /var/www/html/
-chown -R www-data:www-data /var/www/html/glpi
+mv glpi /var/www/
+chown -R www-data:www-data /var/www/glpi
 
 # Create GLPI database and user
 mysql -e "CREATE DATABASE $GLPI_DB_NAME;"
@@ -33,4 +33,4 @@ echo "<VirtualHost *:80>
         </Directory>
 </VirtualHost>" > /etc/apache2/sites-available/$GLPI_VHOST_NAME.conf
 a2ensite $GLPI_VHOST_NAME.conf
-systemctl reload apache2
+systemctl restart apache2
