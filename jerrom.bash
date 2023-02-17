@@ -13,7 +13,7 @@ sudo add-apt-repository ppa:ondrej/php
 
 # Install required packages and PHP extensions
 sudo apt update
-sudo apt install -y php7.4 php7.4-curl php7.4-fileinfo php7.4-gd php7.4-mbstring php7.4-mysqli php7.4-intl php7.4-zlib php7.4-simplexml php7.4-xml php7.4-json libapache2-mod-php7.4
+sudo apt install -y php7.4 php-curl php-fileinfo php-gd php-mbstring php-mysqli php-intl php-zlib php-simplexml php-xml php-json libapache2-mod-php
 sudo apt install php7.4-fpm
 sudo apt install php7.4-curl
 sudo apt install apache2
