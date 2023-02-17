@@ -50,7 +50,7 @@ fi
 
 # Create Apache virtual host
 echo "<VirtualHost *:80>
-        ServerName 127.0.0.1
+        ServerName localhost
         DocumentRoot /var/www/glpi
         <Directory /var/www/glpi>
                 Options Indexes FollowSymLinks
