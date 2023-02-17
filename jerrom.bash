@@ -47,8 +47,8 @@ fi
 #MYSQL secure installation
 mysql_secure_installation <<EOF
 y
-Glpi123+
-Glpi123+
+Securepass123+
+Securepass123+
 y
 y
 y
