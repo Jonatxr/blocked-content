@@ -6,11 +6,15 @@ GLPI_DB_NAME=glpidb
 GLPI_DB_USER=glpiuser
 MYSQL_ROOT_PASSWORD=jerrom123+
 GLPI_DB_PASSWORD=password
-GLPI_VHOST_NAME=glpi.conf
+GLPI_VHOST_NAME=127.0.0.1
 
 # Install required packages and PHP extensions
 apt-get update
 apt-get install -y apache2 mariadb-server php libapache2-mod-php php-mysql php-curl php-fileinfo php-gd php-json php-mbstring php-mysqli php-session php-zlib php-simplexml php-xml php-intl
+
+#Create working repo
+mkdir /tempglpi
+cd /tempglpi
 
 # Delete GLPI if already exists
 if [ -d "/var/www/html/glpi" ]; then
@@ -56,6 +60,8 @@ echo "<VirtualHost *:80>
 </VirtualHost>" > /etc/apache2/sites-available/$GLPI_VHOST_NAME.conf
 wget https://github.com/fusioninventory/fusioninventory-for-glpi/releases/download/glpi10.0.6%2B1.1/fusioninventory-10.0.6+1.1.tar.bz2
 tar xvfz fusioninventory-10.0.6+1.1.tar.bz2
-mv fusioninventory* /var/www/glpi/plugins/
-a2ensite $GLPI_VHOST_NAME.conf
-systemctl restart apache2
+mv fusioninventory/ /var/www/glpi/plugins/
+a2dissite 000-default.conf
+systemctl reload apache2.service
+2ensite $GLPI_VHOST_NAME.conf
+systemctl reload apache2
