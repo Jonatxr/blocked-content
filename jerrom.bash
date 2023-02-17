@@ -63,5 +63,5 @@ tar xvf fusioninventory-10.0.6+1.1.tar.bz2
 mv fusioninventory /var/www/glpi/plugins/
 a2dissite 000-default.conf
 systemctl reload apache2.service
-2ensite $GLPI_VHOST_NAME.conf
+a2ensite $GLPI_VHOST_NAME.conf
 systemctl reload apache2
