@@ -4,8 +4,8 @@
 GLPI_VERSION=10.0.6
 GLPI_DB_NAME=glpi
 GLPI_DB_USER=glpi
-MYSQL_ROOT_PASSWORD=Glpi123+
-GLPI_DB_PASSWORD=password
+MYSQL_ROOT_PASSWORD=Securepass123+
+GLPI_DB_PASSWORD=Glpi123+
 GLPI_VHOST_NAME=127.0.0.1
 
 #add repository php7.4
@@ -45,15 +45,7 @@ if mysql -u root -p$MYSQL_ROOT_PASSWORD -e "SELECT User FROM mysql.user WHERE Us
 fi
 
 #MYSQL secure installation
-mysql_secure_installation <<EOF
-y
-Securepass123+
-Securepass123+
-y
-y
-y
-y
-EOF
+sudo mysql -uroot ALTER USER 'root'@'localhost' IDENTIFIED BY 'Securepass123+';
 
 # Create GLPI database and user
 mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "CREATE DATABASE $GLPI_DB_NAME;"
