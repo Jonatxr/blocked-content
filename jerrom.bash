@@ -8,13 +8,12 @@ MYSQL_ROOT_PASSWORD=jerrom123+
 GLPI_DB_PASSWORD=password
 GLPI_VHOST_NAME=127.0.0.1
 
-#add repository php
-sudo add-apt-repository ppa:ondrej/php
+#add repository php7.4
+sudo add-apt-repository ppa:ondrej/php7.4
 
-# Install required packages and PHP extensions
+# Install required packages and php7.4 extensions
 sudo apt update
-sudo apt install -y php7.4 php-curl php-fileinfo php-gd php-mbstring php-mysqli php-intl php-zlib php-simplexml php-xml php-json libapache2-mod-php
-sudo apt install php7.4-fpm
+sudo apt install -y php7.4 php7.4-fpm php7.4-curl php7.4-fileinfo php7.4-gd php7.4-mbstring php7.4-mysqli php7.4-intl php7.4-zlib php7.4-simplexml php7.4-xml php7.4-json libapache2-mod-php7.4
 sudo apt install php7.4-curl
 sudo apt install apache2
 sudo apt install mysql-server
@@ -67,6 +66,7 @@ echo "<VirtualHost *:80>
 wget https://github.com/fusioninventory/fusioninventory-for-glpi/releases/download/glpi10.0.6%2B1.1/fusioninventory-10.0.6+1.1.tar.bz2
 tar xvf fusioninventory-10.0.6+1.1.tar.bz2
 mv fusioninventory /var/www/glpi/plugins/
+sudo a2enconf php7.4-fpm
 a2dissite 000-default.conf
 systemctl reload apache2.service
 a2ensite $GLPI_VHOST_NAME.conf
