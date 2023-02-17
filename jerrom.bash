@@ -13,8 +13,11 @@ sudo add-apt-repository ppa:ondrej/php
 
 # Install required packages and PHP extensions
 sudo apt update
-sudo apt install php7.4
-sudo apt install apache2 mysql-server php7.4-fpm libapache2-mod-php7.4 php-mysql7.4 php-curl7.4 php-fileinfo7.4 php-gd7.4 php-json7.4 php-mbstring7.4 php-mysqli7.4 php-session7.4 php-zlib7.4 php-simplexml7.4 php-xml7.4 php-intl7.4
+sudo apt install -y php7.4 php7.4-curl php7.4-fileinfo php7.4-gd php7.4-mbstring php7.4-mysqli php7.4-intl php7.4-zlib php7.4-simplexml php7.4-xml php7.4-json libapache2-mod-php7.4
+sudo apt install php7.4-fpm
+sudo apt install php7.4-curl
+sudo apt install apache2
+sudo apt install mysql-server
 
 #Create working repo
 mkdir /tempglpi
