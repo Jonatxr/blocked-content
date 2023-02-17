@@ -27,7 +27,7 @@ fi
 # Download GLPI
 wget https://github.com/glpi-project/glpi/releases/download/$GLPI_VERSION/glpi-$GLPI_VERSION.tgz
 tar xvfz glpi-$GLPI_VERSION.tgz
-mv glpi /var/www/
+mv glpi /var/www/glpi
 chown -R www-data:www-data /var/www/glpi
 
 # Delete existing database and user if they exist
@@ -50,7 +50,6 @@ fi
 
 # Create Apache virtual host
 echo "<VirtualHost *:80>
-        ServerName localhost
         DocumentRoot /var/www/glpi
         <Directory /var/www/glpi>
                 Options Indexes FollowSymLinks
