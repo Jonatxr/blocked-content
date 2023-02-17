@@ -12,8 +12,8 @@ GLPI_VHOST_NAME=127.0.0.1
 sudo add-apt-repository ppa:ondrej/php
 
 # Install required packages and PHP extensions
-apt-get update
-apt-get install -y apache2 mysql-server php7.4 php7.4-fpm libapache2-mod-php7.4 php-mysql7.4 php-curl7.4 php-fileinfo7.4 php-gd7.4 php-json7.4 php-mbstring7.4 php-mysqli7.4 php-session7.4 php-zlib7.4 php-simplexml7.4 php-xml7.4 php-intl7.4
+apt update
+apt install -y apache2 mysql-server php7.4 php7.4-fpm libapache2-mod-php7.4 php-mysql7.4 php-curl7.4 php-fileinfo7.4 php-gd7.4 php-json7.4 php-mbstring7.4 php-mysqli7.4 php-session7.4 php-zlib7.4 php-simplexml7.4 php-xml7.4 php-intl7.4
 
 #Create working repo
 mkdir /tempglpi
