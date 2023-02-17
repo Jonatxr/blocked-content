@@ -2,9 +2,9 @@
 
 # Variables
 GLPI_VERSION=10.0.6
-GLPI_DB_NAME=glpidb
-GLPI_DB_USER=glpiuser
-MYSQL_ROOT_PASSWORD=jerrom123+
+GLPI_DB_NAME=glpi
+GLPI_DB_USER=glpi
+MYSQL_ROOT_PASSWORD=Glpi123+
 GLPI_DB_PASSWORD=password
 GLPI_VHOST_NAME=127.0.0.1
 
@@ -43,6 +43,17 @@ fi
 if mysql -u root -p$MYSQL_ROOT_PASSWORD -e "SELECT User FROM mysql.user WHERE User='$GLPI_DB_USER'" | grep $GLPI_DB_USER; then
     mysql -u root -p$MYSQL_ROOT_PASSWORD -e "DROP USER $GLPI_DB_USER@localhost;"
 fi
+
+#MYSQL secure installation
+mysql_secure_installation <<EOF
+y
+Glpi123+
+Glpi123+
+y
+y
+y
+y
+EOF
 
 # Create GLPI database and user
 mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "CREATE DATABASE $GLPI_DB_NAME;"
