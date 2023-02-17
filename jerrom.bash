@@ -74,3 +74,5 @@ a2dissite 000-default.conf
 systemctl reload apache2.service
 a2ensite $GLPI_VHOST_NAME.conf
 systemctl reload apache2
+echo "Merci de consulter /password/pwd pour les mots de passe"
+echo "BDD: $GLPI_DB_NAME - User BDD: $GLPI_DB_USER - Mot de passe BDD: GLPI_DB_PASSWORD - MYSQL ROOT PASSWORD: $MYSQL_ROOT_PASSWORD" > /password/pwd
