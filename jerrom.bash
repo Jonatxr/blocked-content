@@ -6,7 +6,7 @@ GLPI_DB_NAME=glpidb
 GLPI_DB_USER=glpiuser
 MYSQL_ROOT_PASSWORD=jerrom123+
 GLPI_DB_PASSWORD=password
-GLPI_VHOST_NAME=127.0.0.1
+GLPI_VHOST_NAME=glpi.conf
 
 # Install required packages and PHP extensions
 apt-get update
@@ -46,7 +46,7 @@ fi
 
 # Create Apache virtual host
 echo "<VirtualHost *:80>
-        ServerName $GLPI_VHOST_NAME
+        ServerName 127.0.0.1
         DocumentRoot /var/www/glpi
         <Directory /var/www/glpi>
                 Options Indexes FollowSymLinks
